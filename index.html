@@ -3,365 +3,444 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Klick das Monster!</title>
+    <title>Welcome</title>
     <style>
-        body {
+        @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap');
+
+        * {
             margin: 0;
-            padding: 10px;
-            font-family: Arial, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'JetBrains Mono', monospace;
+            background: #0a0a0a;
+            color: #e0e0e0;
             min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            overflow-x: hidden;
+            overflow: hidden;
         }
 
-        .settings-btn {
-            position: fixed;
-            top: 15px;
-            right: 15px;
-            width: 45px;
-            height: 45px;
-            background: rgba(255, 255, 255, 0.2);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.3em;
-            cursor: pointer;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
-            z-index: 1000;
-            touch-action: manipulation;
-        }
-
-        .settings-btn:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: rotate(90deg);
-        }
-
-        .fullscreen-mode {
+        /* SUBTLE DARK BACKGROUND */
+        body::before {
+            content: '';
             position: fixed;
             top: 0;
             left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: 999;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-        }
-
-        .fullscreen-mode .game-container {
-            max-width: 95%;
-            max-height: 95%;
-        }
-
-        /* Mobile optimizations */
-        @media (max-width: 768px) {
-            .game-container {
-                padding: 15px;
-                border-radius: 15px;
-            }
-            
-            .monster {
-                margin: 10px auto;
-            }
-            
-            .reset-btn {
-                padding: 10px 20px;
-                margin-top: 10px;
-            }
-        }
-
-        @media (max-height: 600px) {
-            .game-container {
-                padding: 10px;
-            }
-            
-            h1 {
-                margin-bottom: 10px;
-            }
-            
-            .score {
-                margin-bottom: 15px;
-            }
-        }
-
-        .game-container {
-            background: white;
-            border-radius: 20px;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-            text-align: center;
-            max-width: 90vw;
             width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-        }
-
-        h1 {
-            color: #333;
-            margin-bottom: 15px;
-            font-size: clamp(1.8em, 6vw, 2.5em);
-        }
-
-        .score {
-            font-size: clamp(1.2em, 4vw, 1.5em);
-            color: #666;
-            margin-bottom: 20px;
-        }
-
-        .monster {
-            width: clamp(120px, 30vw, 150px);
-            height: clamp(120px, 30vw, 150px);
-            background: #ff6b6b;
-            border-radius: 50%;
-            margin: 15px auto;
-            cursor: pointer;
-            transition: all 0.2s ease;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: clamp(3em, 8vw, 4em);
-            user-select: none;
-            position: relative;
-            animation: bounce 2s infinite;
-            touch-action: manipulation;
-        }
-
-        .monster:hover {
-            transform: scale(1.1);
-            background: #ff5252;
-        }
-
-        .monster:active {
-            transform: scale(0.95);
-            background: #ff1744;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% {
-                transform: translateY(0);
-            }
-            40% {
-                transform: translateY(-10px);
-            }
-            60% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .hit-effect {
-            animation: hit 0.3s ease-out !important;
-        }
-
-        @keyframes hit {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.3); background: #4caf50; }
-            100% { transform: scale(1); }
-        }
-
-        .level {
-            color: #333;
-            font-size: clamp(1em, 3vw, 1.2em);
-            margin-bottom: 10px;
-        }
-
-        .progress-bar {
-            width: 100%;
-            height: 15px;
-            background: #e0e0e0;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 10px 0;
-        }
-
-        .progress {
             height: 100%;
-            background: linear-gradient(90deg, #4caf50, #8bc34a);
-            width: 0%;
-            transition: width 0.3s ease;
+            background: 
+                radial-gradient(circle at 25% 25%, rgba(30, 30, 30, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 75% 75%, rgba(20, 20, 20, 0.4) 0%, transparent 50%);
+            z-index: -1;
         }
 
-        .achievement {
-            background: #4caf50;
-            color: white;
-            padding: 12px;
-            border-radius: 10px;
-            margin: 15px 0;
+        /* START SCREEN */
+        .start-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        .start-screen.hidden {
+            animation: fadeOut 1s ease-in-out forwards;
+        }
+
+        .logo {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            margin-bottom: 1rem;
+            letter-spacing: 8px;
             opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.5s ease;
-            font-size: clamp(0.9em, 3vw, 1em);
+            animation: slideDown 1.5s ease-out 0.5s forwards;
         }
 
-        .achievement.show {
-            opacity: 1;
+        .tagline {
+            font-size: 1.1rem;
+            color: #888;
+            margin-bottom: 4rem;
+            text-align: center;
+            opacity: 0;
+            animation: slideUp 1.5s ease-out 1s forwards;
+            letter-spacing: 2px;
+        }
+
+        .start-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            opacity: 0;
+            animation: slideUp 1.5s ease-out 1.5s forwards;
+        }
+
+        .dark-btn {
+            padding: 18px 45px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border: 2px solid #333;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            position: relative;
+        }
+
+        .dark-btn:hover {
+            background: #2a2a2a;
+            border-color: #555;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+
+        .dark-btn:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .btn-start {
+            border-color: #444;
+        }
+
+        .btn-start:hover {
+            border-color: #666;
+            background: #2d2d2d;
+        }
+
+        .btn-settings {
+            border-color: #333;
+        }
+
+        .btn-settings:hover {
+            border-color: #555;
+            background: #252525;
+        }
+
+        /* GAME SCREEN */
+        .game-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            transform: translateY(100%);
+            transition: transform 1s ease-in-out;
+            z-index: 999;
+        }
+
+        .game-screen.active {
             transform: translateY(0);
         }
 
-        .reset-btn {
-            background: #ff6b6b;
-            color: white;
-            border: none;
-            padding: 12px 25px;
-            border-radius: 25px;
-            font-size: clamp(1em, 3vw, 1.1em);
-            cursor: pointer;
-            margin-top: 15px;
-            transition: all 0.3s ease;
-            touch-action: manipulation;
+        .game-container {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 12px;
+            padding: 35px;
+            text-align: center;
+            max-width: 380px;
+            width: 90%;
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.6);
         }
 
-        .reset-btn:hover {
-            background: #ff5252;
-            transform: translateY(-2px);
+        .game-title {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 30px;
+            color: #ffffff;
+            letter-spacing: 3px;
+        }
+
+        .game-area {
+            background: #0d0d0d;
+            border: 1px solid #222;
+            border-radius: 8px;
+            padding: 40px 20px;
+            margin: 20px 0;
+            position: relative;
+            min-height: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .score {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #fff;
+            margin: 20px 0;
+            letter-spacing: 2px;
+        }
+
+        .game-circle {
+            width: 100px;
+            height: 100px;
+            background: #1a1a1a;
+            border: 2px solid #444;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #e0e0e0;
+            font-weight: 700;
+            font-size: 1rem;
+            user-select: none;
+            margin: 25px 0;
+            letter-spacing: 1px;
+        }
+
+        .game-circle:hover {
+            background: #2a2a2a;
+            border-color: #666;
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        }
+
+        .game-circle:active {
+            transform: scale(0.95);
+            background: #333;
+        }
+
+        .back-btn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #1a1a1a;
+            color: #e0e0e0;
+            border: 1px solid #333;
+            border-radius: 50%;
+            width: 45px;
+            height: 45px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .back-btn:hover {
+            background: #2a2a2a;
+            border-color: #555;
+            transform: scale(1.1);
+        }
+
+        .instructions {
+            color: #888;
+            margin-top: 25px;
+            font-size: 0.9rem;
+            line-height: 1.5;
+            letter-spacing: 0.5px;
+        }
+
+        /* MINIMALE ANIMATIONEN */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeOut {
+            from { opacity: 1; }
+            to { opacity: 0; visibility: hidden; }
+        }
+
+        @keyframes slideDown {
+            from { 
+                opacity: 0; 
+                transform: translateY(-30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        @keyframes slideUp {
+            from { 
+                opacity: 0; 
+                transform: translateY(30px); 
+            }
+            to { 
+                opacity: 1; 
+                transform: translateY(0); 
+            }
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 480px) {
+            .logo {
+                font-size: 2.5rem;
+                letter-spacing: 4px;
+            }
+            
+            .tagline {
+                font-size: 1rem;
+            }
+            
+            .dark-btn {
+                padding: 15px 35px;
+                font-size: 1rem;
+            }
+            
+            .game-container {
+                padding: 25px;
+                margin: 15px;
+            }
+            
+            .game-circle {
+                width: 85px;
+                height: 85px;
+                font-size: 0.9rem;
+            }
+        }
+
+        /* SCROLLBAR STYLING */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #111;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
         }
     </style>
 </head>
 <body>
-    <div class="settings-btn" id="settingsBtn">⚙️</div>
-    
-    <div class="game-container">
-        <h1>🎯 Klick das Monster!</h1>
-        <div class="level">Level: <span id="level">1</span></div>
-        <div class="score">Punkte: <span id="score">0</span></div>
-        
-        <div class="progress-bar">
-            <div class="progress" id="progress"></div>
+    <!-- START SCREEN -->
+    <div class="start-screen" id="startScreen">
+        <div class="logo">DARK GAME</div>
+        <div class="tagline">performence • clean • smooth</div>
+        <div class="start-buttons">
+            <button class="dark-btn btn-start" id="startGameBtn">
+                ▶ START GAME
+            </button>
+            <button class="dark-btn btn-settings" id="settingsBtn">
+                ⚙ SETTINGS
+            </button>
         </div>
-        
-        <div class="monster" id="monster">👾</div>
-        
-        <div class="achievement" id="achievement"></div>
-        
-        <button class="reset-btn" onclick="resetGame()">Neues Spiel</button>
+    </div>
+
+    <!-- GAME SCREEN -->
+    <div class="game-screen" id="gameScreen">
+        <div class="game-container">
+            <button class="back-btn" id="backBtn">←</button>
+            
+            <h1 class="game-title">CLICK GAME</h1>
+            
+            <div class="game-area">
+                <div class="score" id="score">SCORE: 0</div>
+                <div class="game-circle" id="gameCircle">CLICK</div>
+                <div class="instructions">
+                    Click the circle to increase your score<br>
+                    Simple and clean gameplay
+                </div>
+            </div>
+        </div>
     </div>
 
     <script>
         let score = 0;
-        let level = 1;
-        let clicksNeeded = 10;
-        let currentClicks = 0;
-        let settingsClicks = 0;
-        let isFullscreen = false;
-        
-        const scoreEl = document.getElementById('score');
-        const levelEl = document.getElementById('level');
-        const progressEl = document.getElementById('progress');
-        const monsterEl = document.getElementById('monster');
-        const achievementEl = document.getElementById('achievement');
+        let gameActive = false;
+
+        // Elements
+        const startScreen = document.getElementById('startScreen');
+        const gameScreen = document.getElementById('gameScreen');
+        const startGameBtn = document.getElementById('startGameBtn');
         const settingsBtn = document.getElementById('settingsBtn');
-        const body = document.body;
-        
-        const monsters = ['👾', '👹', '👻', '🤖', '👽', '🎃', '😈', '🐉'];
-        const achievements = [
-            'Erster Klick! 🎉',
-            'Level 2 erreicht! 🚀',
-            'Monster-Jäger! 💪',
-            'Klick-Meister! ⭐',
-            'Legendär! 🏆',
-            'Unaufhaltbar! 🔥',
-            'Monster-König! 👑',
-            'Ultimativer Champion! 🎊'
-        ];
-        
-        function hitMonster() {
-            score += level * 10;
-            currentClicks++;
-            
-            // Visual feedback
-            monsterEl.classList.add('hit-effect');
-            setTimeout(() => monsterEl.classList.remove('hit-effect'), 300);
-            
-            // Update display
-            scoreEl.textContent = score;
-            progressEl.style.width = (currentClicks / clicksNeeded) * 100 + '%';
-            
-            // Level up check
-            if (currentClicks >= clicksNeeded) {
-                levelUp();
-            }
-            
-            // Random monster change
-            if (Math.random() < 0.3) {
-                monsterEl.textContent = monsters[Math.floor(Math.random() * monsters.length)];
-            }
-        }
-        
-        function levelUp() {
-            level++;
-            currentClicks = 0;
-            clicksNeeded = Math.floor(clicksNeeded * 1.2);
-            
-            levelEl.textContent = level;
-            progressEl.style.width = '0%';
-            
-            // Show achievement
-            if (level <= achievements.length) {
-                showAchievement(achievements[level - 1]);
-            }
-            
-            // Change monster
-            monsterEl.textContent = monsters[(level - 1) % monsters.length];
-        }
-        
-        function showAchievement(text) {
-            achievementEl.textContent = text;
-            achievementEl.classList.add('show');
+        const backBtn = document.getElementById('backBtn');
+        const scoreElement = document.getElementById('score');
+        const gameCircle = document.getElementById('gameCircle');
+
+        // Start Game
+        startGameBtn.addEventListener('click', function() {
+            startScreen.classList.add('hidden');
+            setTimeout(() => {
+                gameScreen.classList.add('active');
+                gameActive = true;
+            }, 1000);
+        });
+
+        // Settings Button - Opens Google
+        settingsBtn.addEventListener('click', function() {
+            this.style.background = '#333';
+            this.textContent = '⚙ OPENING...';
             
             setTimeout(() => {
-                achievementEl.classList.remove('show');
-            }, 3000);
-        }
-        
-        function resetGame() {
-            score = 0;
-            level = 1;
-            currentClicks = 0;
-            clicksNeeded = 10;
-            
-            scoreEl.textContent = '0';
-            levelEl.textContent = '1';
-            progressEl.style.width = '0%';
-            monsterEl.textContent = '👾';
-            achievementEl.classList.remove('show');
-        }
-        
-        function redirectToGoogle() {
-            settingsClicks++;
-            
-            if (settingsClicks >= 3) {
-                settingsClicks = 0;
-                showAchievement('Weiterleitung zu Google... 🌐');
-                setTimeout(() => {
-                    window.open('https://www.google.com', '_blank');
-                }, 1000);
-            } else {
-                showAchievement(`Settings: ${settingsClicks}/3 Klicks 🎛️`);
-            }
-        }
-        
-        // Event listeners
-        monsterEl.addEventListener('click', hitMonster);
-        settingsBtn.addEventListener('click', redirectToGoogle);
-        
-        // Keyboard support (Leertaste)
-        document.addEventListener('keydown', function(e) {
-            if (e.code === 'Space') {
-                e.preventDefault();
-                hitMonster();
-            }
+                window.open('https://www.google.com', '_blank');
+                this.style.background = '#1a1a1a';
+                this.textContent = '⚙ SETTINGS';
+            }, 500);
         });
-        
-        // Show welcome message
-        setTimeout(() => {
-            showAchievement('Willkommen! Klick das Monster! 📱');
-        }, 500);
+
+        // Back to Start
+        backBtn.addEventListener('click', function() {
+            gameScreen.classList.remove('active');
+            setTimeout(() => {
+                startScreen.classList.remove('hidden');
+                gameActive = false;
+                score = 0;
+                scoreElement.textContent = 'SCORE: 0';
+            }, 1000);
+        });
+
+        // Game Logic
+        gameCircle.addEventListener('click', function() {
+            if (!gameActive) return;
+            
+            score++;
+            scoreElement.textContent = `SCORE: ${score}`;
+            
+            // Simple click feedback
+            this.style.transform = 'scale(0.9)';
+            this.style.background = '#333';
+            
+            setTimeout(() => {
+                this.style.transform = 'scale(1)';
+                this.style.background = '#1a1a1a';
+            }, 100);
+        });
+
+        // Touch Events
+        [startGameBtn, settingsBtn, backBtn, gameCircle].forEach(element => {
+            element.addEventListener('touchstart', function(e) {
+                e.preventDefault();
+            });
+        });
+
+        // Prevent zoom
+        document.addEventListener('touchend', function(e) {
+            e.preventDefault();
+        });
     </script>
 </body>
 </html>
