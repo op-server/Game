@@ -7,7 +7,7 @@
     <style>
         body {
             margin: 0;
-            padding: 20px;
+            padding: 10px;
             font-family: Arial, sans-serif;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             min-height: 100vh;
@@ -15,24 +15,26 @@
             justify-content: center;
             align-items: center;
             flex-direction: column;
+            overflow-x: hidden;
         }
 
         .settings-btn {
             position: fixed;
-            top: 20px;
-            right: 20px;
-            width: 50px;
-            height: 50px;
+            top: 15px;
+            right: 15px;
+            width: 45px;
+            height: 45px;
             background: rgba(255, 255, 255, 0.2);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 1.5em;
+            font-size: 1.3em;
             cursor: pointer;
             backdrop-filter: blur(10px);
             transition: all 0.3s ease;
             z-index: 1000;
+            touch-action: manipulation;
         }
 
         .settings-btn:hover {
@@ -54,47 +56,81 @@
         }
 
         .fullscreen-mode .game-container {
-            max-width: 80%;
-            max-height: 80%;
+            max-width: 95%;
+            max-height: 95%;
+        }
+
+        /* Mobile optimizations */
+        @media (max-width: 768px) {
+            .game-container {
+                padding: 15px;
+                border-radius: 15px;
+            }
+            
+            .monster {
+                margin: 10px auto;
+            }
+            
+            .reset-btn {
+                padding: 10px 20px;
+                margin-top: 10px;
+            }
+        }
+
+        @media (max-height: 600px) {
+            .game-container {
+                padding: 10px;
+            }
+            
+            h1 {
+                margin-bottom: 10px;
+            }
+            
+            .score {
+                margin-bottom: 15px;
+            }
         }
 
         .game-container {
             background: white;
             border-radius: 20px;
-            padding: 30px;
+            padding: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.3);
             text-align: center;
-            max-width: 500px;
+            max-width: 90vw;
             width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
         }
 
         h1 {
             color: #333;
-            margin-bottom: 20px;
-            font-size: 2.5em;
+            margin-bottom: 15px;
+            font-size: clamp(1.8em, 6vw, 2.5em);
         }
 
         .score {
-            font-size: 1.5em;
+            font-size: clamp(1.2em, 4vw, 1.5em);
             color: #666;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
         }
 
         .monster {
-            width: 150px;
-            height: 150px;
+            width: clamp(120px, 30vw, 150px);
+            height: clamp(120px, 30vw, 150px);
             background: #ff6b6b;
             border-radius: 50%;
-            margin: 20px auto;
+            margin: 15px auto;
             cursor: pointer;
             transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 4em;
+            font-size: clamp(3em, 8vw, 4em);
             user-select: none;
             position: relative;
             animation: bounce 2s infinite;
+            touch-action: manipulation;
         }
 
         .monster:hover {
@@ -131,13 +167,13 @@
 
         .level {
             color: #333;
-            font-size: 1.2em;
+            font-size: clamp(1em, 3vw, 1.2em);
             margin-bottom: 10px;
         }
 
         .progress-bar {
             width: 100%;
-            height: 20px;
+            height: 15px;
             background: #e0e0e0;
             border-radius: 10px;
             overflow: hidden;
@@ -154,12 +190,13 @@
         .achievement {
             background: #4caf50;
             color: white;
-            padding: 15px;
+            padding: 12px;
             border-radius: 10px;
-            margin: 20px 0;
+            margin: 15px 0;
             opacity: 0;
             transform: translateY(-20px);
             transition: all 0.5s ease;
+            font-size: clamp(0.9em, 3vw, 1em);
         }
 
         .achievement.show {
@@ -171,12 +208,13 @@
             background: #ff6b6b;
             color: white;
             border: none;
-            padding: 15px 30px;
+            padding: 12px 25px;
             border-radius: 25px;
-            font-size: 1.1em;
+            font-size: clamp(1em, 3vw, 1.1em);
             cursor: pointer;
-            margin-top: 20px;
+            margin-top: 15px;
             transition: all 0.3s ease;
+            touch-action: manipulation;
         }
 
         .reset-btn:hover {
@@ -294,62 +332,23 @@
             achievementEl.classList.remove('show');
         }
         
-        function toggleFullscreen() {
+        function redirectToGoogle() {
             settingsClicks++;
             
             if (settingsClicks >= 3) {
                 settingsClicks = 0;
-                isFullscreen = !isFullscreen;
-                
-                if (isFullscreen) {
-                    body.classList.add('fullscreen-mode');
-                    showAchievement('Fullscreen aktiviert! 🔥');
-                    
-                    // Try to enter browser fullscreen
-                    if (document.documentElement.requestFullscreen) {
-                        document.documentElement.requestFullscreen();
-                    } else if (document.documentElement.webkitRequestFullscreen) {
-                        document.documentElement.webkitRequestFullscreen();
-                    } else if (document.documentElement.msRequestFullscreen) {
-                        document.documentElement.msRequestFullscreen();
-                    }
-                } else {
-                    body.classList.remove('fullscreen-mode');
-                    showAchievement('Fullscreen deaktiviert! 📱');
-                    
-                    // Try to exit browser fullscreen
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                }
+                showAchievement('Weiterleitung zu Google... 🌐');
+                setTimeout(() => {
+                    window.open('https://www.google.com', '_blank');
+                }, 1000);
             } else {
                 showAchievement(`Settings: ${settingsClicks}/3 Klicks 🎛️`);
             }
         }
         
-        // Auto-Fullscreen beim Laden
-        window.addEventListener('load', function() {
-            setTimeout(() => {
-                body.classList.add('fullscreen-mode');
-                isFullscreen = true;
-                
-                if (document.documentElement.requestFullscreen) {
-                    document.documentElement.requestFullscreen().catch(() => {});
-                } else if (document.documentElement.webkitRequestFullscreen) {
-                    document.documentElement.webkitRequestFullscreen();
-                } else if (document.documentElement.msRequestFullscreen) {
-                    document.documentElement.msRequestFullscreen();
-                }
-            }, 1000);
-        });
-        
         // Event listeners
         monsterEl.addEventListener('click', hitMonster);
-        settingsBtn.addEventListener('click', toggleFullscreen);
+        settingsBtn.addEventListener('click', redirectToGoogle);
         
         // Keyboard support (Leertaste)
         document.addEventListener('keydown', function(e) {
@@ -361,8 +360,8 @@
         
         // Show welcome message
         setTimeout(() => {
-            showAchievement('Auto-Fullscreen aktiviert! Klick das Monster! 🎮');
-        }, 2000);
+            showAchievement('Willkommen! Klick das Monster! 📱');
+        }, 500);
     </script>
 </body>
 </html>
